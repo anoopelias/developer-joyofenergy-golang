@@ -64,6 +64,8 @@ func toHTTPStatusCode(err error) int {
 		return http.StatusBadRequest
 	case errors.Is(err, domain.ErrNotFound):
 		return http.StatusNotFound
+	case errors.Is(err, domain.ErrNoPricePlan):
+		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError
 	}
