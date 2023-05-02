@@ -1,5 +1,9 @@
 package repository
 
+import (
+	"joi-energy-golang/domain"
+)
+
 type Accounts struct {
 	smartMeterToPricePlanAccounts map[string]string
 }
@@ -10,7 +14,11 @@ func NewAccounts(smartMeterToPricePlanAccounts map[string]string) Accounts {
 	}
 }
 
-func (a *Accounts) PricePlanIdForSmartMeterId(smartMeterId string) string {
+func (a *Accounts) PricePlanIdForSmartMeterId(smartMeterId string) (string, error) {
 	// TODO indicate missing value
-	return a.smartMeterToPricePlanAccounts[smartMeterId]
+	pp, ok := a.smartMeterToPricePlanAccounts[smartMeterId]
+	if !ok {
+		return "", domain.ErrNoPricePlan
+	}
+	return pp, nil
 }

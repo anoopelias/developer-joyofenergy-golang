@@ -25,49 +25,57 @@ func TestEncodeError(t *testing.T) {
 		expectedStatusCode int
 	}{
 		{
-			name:               "invalid content type",
-			err:                mhttp.ErrInvalidContentType,
-			expectedOutput:     `{
+			name: "invalid content type",
+			err:  mhttp.ErrInvalidContentType,
+			expectedOutput: `{
   "errorMessage": "invalid content-type"
 }`,
 			expectedStatusCode: http.StatusUnsupportedMediaType,
 		},
 		{
-			name:               "missing argument",
-			err:                domain.ErrMissingArgument,
-			expectedOutput:     `{
+			name: "missing argument",
+			err:  domain.ErrMissingArgument,
+			expectedOutput: `{
   "errorMessage": "missing argument"
 }`,
 			expectedStatusCode: http.StatusBadRequest,
 		},
 		{
-			name:               "invalid message type",
-			err:                domain.ErrInvalidMessageType,
-			expectedOutput:     `{
+			name: "invalid message type",
+			err:  domain.ErrInvalidMessageType,
+			expectedOutput: `{
   "errorMessage": "invalid message-type"
 }`,
 			expectedStatusCode: http.StatusBadRequest,
 		},
 		{
-			name:               "invalid accept header",
-			err:                mhttp.ErrInvalidAcceptHeader,
-			expectedOutput:     `{
+			name: "invalid accept header",
+			err:  mhttp.ErrInvalidAcceptHeader,
+			expectedOutput: `{
   "errorMessage": "invalid accept header"
 }`,
 			expectedStatusCode: http.StatusNotAcceptable,
 		},
 		{
-			name:               "not found",
-			err:                domain.ErrNotFound,
-			expectedOutput:     `{
+			name: "not found",
+			err:  domain.ErrNotFound,
+			expectedOutput: `{
   "errorMessage": "not found"
 }`,
 			expectedStatusCode: http.StatusNotFound,
 		},
 		{
-			name:               "unknown error",
-			err:                errors.New("👻 I see dead code"),
-			expectedOutput:     `{
+			name: "no price plan found",
+			err:  domain.ErrNoPricePlan,
+			expectedOutput: `{
+  "errorMessage": "no price plan found"
+}`,
+			expectedStatusCode: http.StatusBadRequest,
+		},
+		{
+			name: "unknown error",
+			err:  errors.New("👻 I see dead code"),
+			expectedOutput: `{
   "errorMessage": "👻 I see dead code"
 }`,
 			expectedStatusCode: http.StatusInternalServerError,

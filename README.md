@@ -144,6 +144,25 @@ GET
     ...
 ]
 ```
+### Get last week's usage
+
+#### Endpoint
+
+```
+GET
+/usage/<smartMeterId>
+```
+
+`smartMeterId`: A string value, e.g. `smart-meter-0`
+
+#### Output
+
+```json
+{
+    "smartMeterId": "smart-meter-0",
+    "lastWeekUsageCost": 1649.6994646313187
+}
+```
 
 ## Useful make commands
 

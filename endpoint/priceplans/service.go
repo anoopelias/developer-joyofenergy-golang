@@ -15,9 +15,9 @@ type Service interface {
 }
 
 type service struct {
-	logger *logrus.Entry
+	logger     *logrus.Entry
 	pricePlans *repository.PricePlans
-	accounts *repository.Accounts
+	accounts   *repository.Accounts
 }
 
 func NewService(
@@ -33,7 +33,7 @@ func NewService(
 }
 
 func (s *service) CompareAllPricePlans(smartMeterId string) (domain.PricePlanComparisons, error) {
-	pricePlanId := s.accounts.PricePlanIdForSmartMeterId(smartMeterId)
+	pricePlanId, _ := s.accounts.PricePlanIdForSmartMeterId(smartMeterId)
 	consumptionsForPricePlans := s.pricePlans.ConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeterId)
 	if len(consumptionsForPricePlans) == 0 {
 		return domain.PricePlanComparisons{}, domain.ErrNotFound
