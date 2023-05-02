@@ -30,9 +30,7 @@ func MakeGetUsageHandler(
 	)
 
 	endpointHandler := kithttp.NewServer(
-		mw(func(ctx context.Context, request interface{}) (interface{}, error) {
-			return nil, nil
-		}),
+		mw(makeUsageEndpoint()),
 		decodeSmartMeterIdFromRequest,
 		mhttp.EncodeResponse,
 		opts...,
