@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"time"
 
 	"joi-energy-golang/domain"
@@ -35,7 +34,7 @@ func (p *PricePlans) UnitCostForPricePlan(planName string) (float64, error) {
 		}
 	}
 
-	return 0, fmt.Errorf("plan not found")
+	return 0, domain.ErrNoPricePlan
 }
 
 func calculateCost(electricityReadings []domain.ElectricityReading, pricePlan domain.PricePlan) float64 {
