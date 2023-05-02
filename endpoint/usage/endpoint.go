@@ -6,13 +6,17 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
-func makeUsageEndpoint() endpoint.Endpoint {
+func makeUsageEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(string)
 		err := validateSmartMeterId(req)
 		if err != nil {
 			return nil, err
 		}
-		return nil, nil
+		r, err := s.GetUsage(req)
+		if err != nil {
+			return nil, err
+		}
+		return r, nil
 	}
 }

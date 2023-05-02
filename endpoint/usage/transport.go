@@ -17,6 +17,7 @@ import (
 )
 
 func MakeGetUsageHandler(
+	s Service,
 	logger *logrus.Entry,
 ) http.Handler {
 	opts := []kithttp.ServerOption{
@@ -30,7 +31,7 @@ func MakeGetUsageHandler(
 	)
 
 	endpointHandler := kithttp.NewServer(
-		mw(makeUsageEndpoint()),
+		mw(makeUsageEndpoint(s)),
 		decodeSmartMeterIdFromRequest,
 		mhttp.EncodeResponse,
 		opts...,
