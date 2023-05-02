@@ -64,5 +64,6 @@ type StoreReadings struct {
 }
 
 type Usage struct {
-	SmartMeterId string `json:"smartMeterId"`
+	SmartMeterId      string  `json:"smartMeterId"`
+	LastWeekUsageCost float64 `json:"lastWeekUsageCost"`
 }

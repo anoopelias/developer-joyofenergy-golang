@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"fmt"
 	"time"
 
 	"joi-energy-golang/domain"
 )
 
 type PricePlans struct {
-	pricePlans []domain.PricePlan
+	pricePlans    []domain.PricePlan
 	meterReadings *MeterReadings
 }
 
@@ -25,6 +26,16 @@ func (p *PricePlans) ConsumptionCostOfElectricityReadingsForEachPricePlan(smartM
 		costs[plan.PlanName] = calculateCost(electricityReadings, plan)
 	}
 	return costs
+}
+
+func (p *PricePlans) UnitCostForPricePlan(planName string) (float64, error) {
+	for _, pp := range p.pricePlans {
+		if pp.PlanName == planName {
+			return pp.UnitRate, nil
+		}
+	}
+
+	return 0, fmt.Errorf("plan not found")
 }
 
 func calculateCost(electricityReadings []domain.ElectricityReading, pricePlan domain.PricePlan) float64 {
