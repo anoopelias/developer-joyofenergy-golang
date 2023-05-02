@@ -36,7 +36,12 @@ func NewService(
 func (s *service) GetUsage(smartMeterId string) (domain.Usage, error) {
 	avg := calculateAverageReading(s.meterReadings.GetReadings(smartMeterId))
 	units := avg * 24 * 7
-	plan, _ := s.accounts.PricePlanIdForSmartMeterId(smartMeterId)
+
+	plan, err := s.accounts.PricePlanIdForSmartMeterId(smartMeterId)
+	if err != nil {
+		return domain.Usage{}, err
+	}
+
 	unitCost, _ := s.pricePlans.UnitCostForPricePlan(plan)
 
 	cost := units * unitCost
