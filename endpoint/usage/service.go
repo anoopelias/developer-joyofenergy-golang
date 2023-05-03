@@ -42,7 +42,10 @@ func (s *service) GetUsage(smartMeterId string) (domain.Usage, error) {
 		return domain.Usage{}, err
 	}
 
-	unitCost, _ := s.pricePlans.UnitCostForPricePlan(plan)
+	unitCost, err := s.pricePlans.UnitCostForPricePlan(plan)
+	if err != nil {
+		return domain.Usage{}, err
+	}
 
 	cost := units * unitCost
 
