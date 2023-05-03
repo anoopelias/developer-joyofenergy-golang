@@ -12,10 +12,12 @@ import (
 
 	"joi-energy-golang/endpoint/priceplans"
 	"joi-energy-golang/endpoint/readings"
+	"joi-energy-golang/endpoint/usage"
 	"joi-energy-golang/repository"
 )
+
 const (
-	serverPort  = "localhost:8080"
+	serverPort = "localhost:8080"
 )
 
 // Run starts the HTTP server
@@ -71,6 +73,10 @@ func setUpServer() http.Handler {
 	pricePlansService := priceplans.NewService(pricePlansLogger, &pricePlans, &accounts)
 	mux.Handle("/price-plans/compare-all/", priceplans.MakeCompareAllPricePlansHandler(pricePlansService, pricePlansLogger))
 	mux.Handle("/price-plans/recommend/", priceplans.MakeRecommendPricePlansHandler(pricePlansService, pricePlansLogger))
+
+	usageLogger := log.WithField("endpoint", "usageLogger")
+	usageService := usage.NewService(usageLogger, &meterReadings, &pricePlans, &accounts)
+	mux.Handle("/usage/", usage.MakeGetUsageHandler(usageService, pricePlansLogger))
 
 	return mux
 }
