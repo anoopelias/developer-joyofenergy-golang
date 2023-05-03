@@ -1,6 +1,8 @@
 package usage
 
 import (
+	"time"
+
 	"github.com/sirupsen/logrus"
 
 	"joi-energy-golang/domain"
@@ -34,7 +36,7 @@ func NewService(
 }
 
 func (s *service) GetUsage(smartMeterId string) (domain.Usage, error) {
-	avg := calculateAverageReading(s.meterReadings.GetReadings(smartMeterId))
+	avg := calculateLastWeeksAverageReading(s.meterReadings.GetReadings(smartMeterId))
 	units := avg * 24 * 7
 
 	plan, err := s.accounts.PricePlanIdForSmartMeterId(smartMeterId)
@@ -55,10 +57,14 @@ func (s *service) GetUsage(smartMeterId string) (domain.Usage, error) {
 	}, nil
 }
 
-func calculateAverageReading(electricityReadings []domain.ElectricityReading) float64 {
+func calculateLastWeeksAverageReading(electricityReadings []domain.ElectricityReading) float64 {
 	sum := 0.0
+	count := 0
 	for _, r := range electricityReadings {
-		sum += r.Reading
+		if r.Time.Compare(time.Now().Add(-24*7*time.Hour)) > 0 {
+			sum += r.Reading
+			count += 1
+		}
 	}
-	return sum / float64(len(electricityReadings))
+	return sum / float64(count)
 }
